@@ -12,6 +12,26 @@ interface TheaterSelectionProps {
   onTheaterSelect: (theaterId: string, showId: string) => void;
 }
 
+interface ShowWithTheaterData {
+  id: string;
+  show_date: string;
+  show_time: string;
+  price: number;
+  available_seats: number;
+  screens: {
+    id: string;
+    screen_number: number;
+    screen_type: string;
+    theaters: {
+      id: string;
+      name: string;
+      location: string;
+      city: string;
+      facilities: string[] | null;
+    };
+  };
+}
+
 export const TheaterSelection = ({ movieId, onTheaterSelect }: TheaterSelectionProps) => {
   const { data: showsData, isLoading, error } = useQuery({
     queryKey: ['shows', movieId],
@@ -19,18 +39,22 @@ export const TheaterSelection = ({ movieId, onTheaterSelect }: TheaterSelectionP
       const { data, error } = await supabase
         .from('shows')
         .select(`
-          *,
-          theaters (
-            id,
-            name,
-            location,
-            city,
-            facilities
-          ),
+          id,
+          show_date,
+          show_time,
+          price,
+          available_seats,
           screens (
             id,
             screen_number,
-            screen_type
+            screen_type,
+            theaters (
+              id,
+              name,
+              location,
+              city,
+              facilities
+            )
           )
         `)
         .eq('movie_id', movieId)
@@ -40,7 +64,7 @@ export const TheaterSelection = ({ movieId, onTheaterSelect }: TheaterSelectionP
         .order('show_time');
       
       if (error) throw error;
-      return data;
+      return data as ShowWithTheaterData[];
     },
   });
 
@@ -76,18 +100,18 @@ export const TheaterSelection = ({ movieId, onTheaterSelect }: TheaterSelectionP
 
   // Group shows by theater
   const theaterGroups = showsData.reduce((acc, show) => {
-    const theaterId = show.theaters?.id;
-    if (!theaterId) return acc;
+    const theater = show.screens?.theaters;
+    if (!theater) return acc;
     
-    if (!acc[theaterId]) {
-      acc[theaterId] = {
-        theater: show.theaters,
+    if (!acc[theater.id]) {
+      acc[theater.id] = {
+        theater: theater,
         shows: []
       };
     }
-    acc[theaterId].shows.push(show);
+    acc[theater.id].shows.push(show);
     return acc;
-  }, {} as Record<string, { theater: any; shows: any[] }>);
+  }, {} as Record<string, { theater: any; shows: ShowWithTheaterData[] }>);
 
   if (Object.keys(theaterGroups).length === 0) {
     return (
@@ -130,7 +154,7 @@ export const TheaterSelection = ({ movieId, onTheaterSelect }: TheaterSelectionP
                   if (!acc[date]) acc[date] = [];
                   acc[date].push(show);
                   return acc;
-                }, {} as Record<string, any[]>)
+                }, {} as Record<string, ShowWithTheaterData[]>)
               ).map(([date, dateShows]) => (
                 <div key={date}>
                   <h4 className="font-medium text-sm text-gray-700 mb-2">
