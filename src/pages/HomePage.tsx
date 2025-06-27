@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { Header } from '@/components/layout/Header';
-import { MovieList } from '@/components/movies/MovieList';
+import { EnhancedMovieList } from '@/components/movies/EnhancedMovieList';
 import { TheaterSelection } from '@/components/booking/TheaterSelection';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
@@ -17,7 +17,6 @@ export const HomePage = () => {
 
   const handleTheaterSelect = (theaterId: string, showId: string) => {
     setSelectedShowId(showId);
-    // Here you would typically navigate to seat selection
     console.log('Selected show:', showId, 'at theater:', theaterId);
   };
 
@@ -27,16 +26,16 @@ export const HomePage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-red-900">
       <Header />
       <main className="container mx-auto px-4 py-8">
         {!selectedMovieId ? (
           <div>
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">Now Showing</h2>
-              <p className="text-gray-600">Choose from the latest movies</p>
+              <h2 className="text-4xl font-bold text-white mb-2">🔥 Now Streaming</h2>
+              <p className="text-red-200">Experience cinema like never before</p>
             </div>
-            <MovieList onMovieSelect={handleMovieSelect} />
+            <EnhancedMovieList onMovieSelect={handleMovieSelect} />
           </div>
         ) : (
           <div>
@@ -45,12 +44,12 @@ export const HomePage = () => {
                 variant="outline" 
                 size="sm"
                 onClick={handleBackToMovies}
-                className="flex items-center gap-2"
+                className="flex items-center gap-2 border-red-500 text-red-400 hover:bg-red-600 hover:text-white"
               >
                 <ArrowLeft className="h-4 w-4" />
                 Back to Movies
               </Button>
-              <h2 className="text-2xl font-bold text-gray-900">Select Theater & Show Time</h2>
+              <h2 className="text-2xl font-bold text-white">Select Theater & Show Time</h2>
             </div>
             <TheaterSelection 
               movieId={selectedMovieId} 
