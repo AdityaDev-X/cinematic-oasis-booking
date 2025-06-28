@@ -6,19 +6,9 @@ import { Badge } from '@/components/ui/badge';
 import { Check, Crown, Zap, Star } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { Tables } from '@/integrations/supabase/types';
 
-interface SubscriptionPlan {
-  id: string;
-  name: string;
-  price: number;
-  currency: string;
-  billing_cycle: string;
-  video_quality: string;
-  device_limit: number;
-  simultaneous_streams: number;
-  features: string[];
-  is_active: boolean;
-}
+type SubscriptionPlan = Tables<'subscription_plans'>;
 
 export const SubscriptionPlans = () => {
   const [plans, setPlans] = useState<SubscriptionPlan[]>([]);
@@ -87,6 +77,20 @@ export const SubscriptionPlans = () => {
     }
   };
 
+  const getPlanFeatures = (features: any): string[] => {
+    if (Array.isArray(features)) {
+      return features;
+    }
+    if (typeof features === 'string') {
+      try {
+        return JSON.parse(features);
+      } catch {
+        return [features];
+      }
+    }
+    return [];
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
@@ -133,7 +137,7 @@ export const SubscriptionPlans = () => {
                 <Check className="h-4 w-4 text-green-500" />
                 <span className="text-gray-300">{plan.simultaneous_streams} simultaneous stream{plan.simultaneous_streams > 1 ? 's' : ''}</span>
               </div>
-              {plan.features.map((feature, index) => (
+              {getPlanFeatures(plan.features).map((feature, index) => (
                 <div key={index} className="flex items-center gap-2">
                   <Check className="h-4 w-4 text-green-500" />
                   <span className="text-gray-300">{feature}</span>
