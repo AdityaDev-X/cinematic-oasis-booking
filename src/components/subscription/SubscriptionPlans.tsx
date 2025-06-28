@@ -2,13 +2,9 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Check, Crown, Zap, Star } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
+import { getSubscriptionPlans, SubscriptionPlan } from '@/lib/firestore';
 import { useToast } from '@/hooks/use-toast';
-import { Tables } from '@/integrations/supabase/types';
-
-type SubscriptionPlan = Tables<'subscription_plans'>;
 
 export const SubscriptionPlans = () => {
   const [plans, setPlans] = useState<SubscriptionPlan[]>([]);
@@ -22,14 +18,8 @@ export const SubscriptionPlans = () => {
 
   const fetchPlans = async () => {
     try {
-      const { data, error } = await supabase
-        .from('subscription_plans')
-        .select('*')
-        .eq('is_active', true)
-        .order('price', { ascending: true });
-
-      if (error) throw error;
-      setPlans(data || []);
+      const fetchedPlans = await getSubscriptionPlans();
+      setPlans(fetchedPlans);
     } catch (error) {
       console.error('Error fetching plans:', error);
       toast({
@@ -75,20 +65,6 @@ export const SubscriptionPlans = () => {
       default:
         return 'border-gray-500 bg-gray-500/10';
     }
-  };
-
-  const getPlanFeatures = (features: any): string[] => {
-    if (Array.isArray(features)) {
-      return features;
-    }
-    if (typeof features === 'string') {
-      try {
-        return JSON.parse(features);
-      } catch {
-        return [features];
-      }
-    }
-    return [];
   };
 
   if (loading) {
@@ -137,7 +113,7 @@ export const SubscriptionPlans = () => {
                 <Check className="h-4 w-4 text-green-500" />
                 <span className="text-gray-300">{plan.simultaneous_streams} simultaneous stream{plan.simultaneous_streams > 1 ? 's' : ''}</span>
               </div>
-              {getPlanFeatures(plan.features).map((feature, index) => (
+              {plan.features.map((feature, index) => (
                 <div key={index} className="flex items-center gap-2">
                   <Check className="h-4 w-4 text-green-500" />
                   <span className="text-gray-300">{feature}</span>

@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { signUp } from '@/lib/auth';
+import { signUp } from '@/lib/firebase-auth';
 import { useToast } from '@/hooks/use-toast';
 
 interface SignUpFormProps {
@@ -33,7 +33,7 @@ export const SignUpForm = ({ onToggleMode }: SignUpFormProps) => {
     } else {
       toast({
         title: "Success",
-        description: "Account created successfully! Please check your email for verification.",
+        description: "Account created successfully!",
       });
     }
 
@@ -41,57 +41,60 @@ export const SignUpForm = ({ onToggleMode }: SignUpFormProps) => {
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto">
-      <CardHeader>
-        <CardTitle>Sign Up</CardTitle>
-        <CardDescription>Create a new account to book movie tickets</CardDescription>
+    <Card className="w-full max-w-md mx-auto bg-black/80 border-red-900">
+      <CardHeader className="text-center">
+        <CardTitle className="text-2xl font-bold text-white">Join FlameStream</CardTitle>
+        <CardDescription className="text-gray-300">Create your streaming account</CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="fullName">Full Name</Label>
+            <Label htmlFor="fullName" className="text-gray-300">Full Name</Label>
             <Input
               id="fullName"
               type="text"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
+              className="bg-gray-800 border-red-700 text-white"
               required
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email" className="text-gray-300">Email</Label>
             <Input
               id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              className="bg-gray-800 border-red-700 text-white"
               required
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password" className="text-gray-300">Password</Label>
             <Input
               id="password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              className="bg-gray-800 border-red-700 text-white"
               required
               minLength={6}
             />
           </div>
-          <Button type="submit" className="w-full" disabled={loading}>
+          <Button type="submit" className="w-full bg-red-600 hover:bg-red-700" disabled={loading}>
             {loading ? 'Creating Account...' : 'Sign Up'}
           </Button>
         </form>
         <div className="mt-4 text-center">
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-400">
             Already have an account?{' '}
             <button
               type="button"
               onClick={onToggleMode}
-              className="text-blue-600 hover:underline"
+              className="text-red-400 hover:underline"
             >
-              Login
+              Sign in
             </button>
           </p>
         </div>

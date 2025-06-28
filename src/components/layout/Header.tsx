@@ -1,7 +1,7 @@
 
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
-import { signOut } from '@/lib/auth';
+import { signOut } from '@/lib/firebase-auth';
 import { Crown, User, LogOut } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
@@ -52,7 +52,7 @@ export const Header = ({ onSubscribeClick }: HeaderProps) => {
             <div className="flex items-center space-x-2 text-gray-300">
               <User className="h-5 w-5" />
               <span className="text-sm">
-                {user.user_metadata?.full_name || user.email}
+                {user.displayName || user.email}
               </span>
             </div>
             
