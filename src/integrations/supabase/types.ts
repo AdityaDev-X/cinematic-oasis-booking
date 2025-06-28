@@ -9,111 +9,75 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      bookings: {
-        Row: {
-          booking_date: string
-          booking_status: Database["public"]["Enums"]["booking_status"] | null
-          created_at: string
-          id: string
-          payment_id: string | null
-          seats_booked: Json
-          show_id: string
-          total_amount: number
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          booking_date?: string
-          booking_status?: Database["public"]["Enums"]["booking_status"] | null
-          created_at?: string
-          id?: string
-          payment_id?: string | null
-          seats_booked: Json
-          show_id: string
-          total_amount: number
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          booking_date?: string
-          booking_status?: Database["public"]["Enums"]["booking_status"] | null
-          created_at?: string
-          id?: string
-          payment_id?: string | null
-          seats_booked?: Json
-          show_id?: string
-          total_amount?: number
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "bookings_show_id_fkey"
-            columns: ["show_id"]
-            isOneToOne: false
-            referencedRelation: "shows"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "bookings_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       movies: {
         Row: {
           cast_members: string[] | null
+          content_type: string | null
           created_at: string
           description: string | null
           director: string | null
           duration: number
+          episodes: number | null
           genre: string[]
           id: string
           language: string
           poster_url: string | null
           rating: number | null
           release_date: string | null
+          required_plan_level: number | null
+          seasons: number | null
           status: string | null
+          thumbnail_url: string | null
           title: string
           trailer_url: string | null
           updated_at: string
+          video_url: string | null
         }
         Insert: {
           cast_members?: string[] | null
+          content_type?: string | null
           created_at?: string
           description?: string | null
           director?: string | null
           duration: number
+          episodes?: number | null
           genre: string[]
           id?: string
           language: string
           poster_url?: string | null
           rating?: number | null
           release_date?: string | null
+          required_plan_level?: number | null
+          seasons?: number | null
           status?: string | null
+          thumbnail_url?: string | null
           title: string
           trailer_url?: string | null
           updated_at?: string
+          video_url?: string | null
         }
         Update: {
           cast_members?: string[] | null
+          content_type?: string | null
           created_at?: string
           description?: string | null
           director?: string | null
           duration?: number
+          episodes?: number | null
           genre?: string[]
           id?: string
           language?: string
           poster_url?: string | null
           rating?: number | null
           release_date?: string | null
+          required_plan_level?: number | null
+          seasons?: number | null
           status?: string | null
+          thumbnail_url?: string | null
           title?: string
           trailer_url?: string | null
           updated_at?: string
+          video_url?: string | null
         }
         Relationships: []
       }
@@ -153,223 +117,124 @@ export type Database = {
         }
         Relationships: []
       }
-      screens: {
+      subscription_plans: {
         Row: {
-          created_at: string
+          billing_cycle: string | null
+          created_at: string | null
+          currency: string | null
+          device_limit: number
+          features: Json | null
           id: string
-          screen_number: number
-          screen_type: string | null
-          seating_layout: Json | null
-          theater_id: string
-          total_seats: number
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          screen_number: number
-          screen_type?: string | null
-          seating_layout?: Json | null
-          theater_id: string
-          total_seats: number
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          screen_number?: number
-          screen_type?: string | null
-          seating_layout?: Json | null
-          theater_id?: string
-          total_seats?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "screens_theater_id_fkey"
-            columns: ["theater_id"]
-            isOneToOne: false
-            referencedRelation: "theaters"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      seats: {
-        Row: {
-          created_at: string
-          id: string
-          is_available: boolean | null
-          screen_id: string
-          seat_number: string
-          seat_row: string
-          seat_type: string | null
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          is_available?: boolean | null
-          screen_id: string
-          seat_number: string
-          seat_row: string
-          seat_type?: string | null
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          is_available?: boolean | null
-          screen_id?: string
-          seat_number?: string
-          seat_row?: string
-          seat_type?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "seats_screen_id_fkey"
-            columns: ["screen_id"]
-            isOneToOne: false
-            referencedRelation: "screens"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      show_seats: {
-        Row: {
-          blocked_until: string | null
-          booking_id: string | null
-          created_at: string
-          id: string
-          seat_id: string
-          show_id: string
-          status: Database["public"]["Enums"]["seat_status"] | null
-          updated_at: string
-        }
-        Insert: {
-          blocked_until?: string | null
-          booking_id?: string | null
-          created_at?: string
-          id?: string
-          seat_id: string
-          show_id: string
-          status?: Database["public"]["Enums"]["seat_status"] | null
-          updated_at?: string
-        }
-        Update: {
-          blocked_until?: string | null
-          booking_id?: string | null
-          created_at?: string
-          id?: string
-          seat_id?: string
-          show_id?: string
-          status?: Database["public"]["Enums"]["seat_status"] | null
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "show_seats_booking_id_fkey"
-            columns: ["booking_id"]
-            isOneToOne: false
-            referencedRelation: "bookings"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "show_seats_seat_id_fkey"
-            columns: ["seat_id"]
-            isOneToOne: false
-            referencedRelation: "seats"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "show_seats_show_id_fkey"
-            columns: ["show_id"]
-            isOneToOne: false
-            referencedRelation: "shows"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      shows: {
-        Row: {
-          available_seats: number
-          created_at: string
-          id: string
-          movie_id: string
-          price: number
-          screen_id: string
-          show_date: string
-          show_time: string
-          status: Database["public"]["Enums"]["show_status"] | null
-          updated_at: string
-        }
-        Insert: {
-          available_seats: number
-          created_at?: string
-          id?: string
-          movie_id: string
-          price: number
-          screen_id: string
-          show_date: string
-          show_time: string
-          status?: Database["public"]["Enums"]["show_status"] | null
-          updated_at?: string
-        }
-        Update: {
-          available_seats?: number
-          created_at?: string
-          id?: string
-          movie_id?: string
-          price?: number
-          screen_id?: string
-          show_date?: string
-          show_time?: string
-          status?: Database["public"]["Enums"]["show_status"] | null
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "shows_movie_id_fkey"
-            columns: ["movie_id"]
-            isOneToOne: false
-            referencedRelation: "movies"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "shows_screen_id_fkey"
-            columns: ["screen_id"]
-            isOneToOne: false
-            referencedRelation: "screens"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      theaters: {
-        Row: {
-          city: string
-          created_at: string
-          facilities: string[] | null
-          id: string
-          location: string
+          is_active: boolean | null
           name: string
-          total_screens: number
-          updated_at: string
+          price: number
+          simultaneous_streams: number
+          updated_at: string | null
+          video_quality: string
         }
         Insert: {
-          city: string
-          created_at?: string
-          facilities?: string[] | null
+          billing_cycle?: string | null
+          created_at?: string | null
+          currency?: string | null
+          device_limit: number
+          features?: Json | null
           id?: string
-          location: string
+          is_active?: boolean | null
           name: string
-          total_screens?: number
-          updated_at?: string
+          price: number
+          simultaneous_streams: number
+          updated_at?: string | null
+          video_quality: string
         }
         Update: {
-          city?: string
-          created_at?: string
-          facilities?: string[] | null
+          billing_cycle?: string | null
+          created_at?: string | null
+          currency?: string | null
+          device_limit?: number
+          features?: Json | null
           id?: string
-          location?: string
+          is_active?: boolean | null
           name?: string
-          total_screens?: number
-          updated_at?: string
+          price?: number
+          simultaneous_streams?: number
+          updated_at?: string | null
+          video_quality?: string
         }
         Relationships: []
+      }
+      user_devices: {
+        Row: {
+          created_at: string | null
+          device_id: string
+          device_name: string
+          device_type: string
+          id: string
+          last_active: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          device_id: string
+          device_name: string
+          device_type: string
+          id?: string
+          last_active?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          device_id?: string
+          device_name?: string
+          device_type?: string
+          id?: string
+          last_active?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      user_subscriptions: {
+        Row: {
+          created_at: string | null
+          current_period_end: string | null
+          current_period_start: string | null
+          id: string
+          plan_id: string | null
+          status: string | null
+          stripe_subscription_id: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          current_period_end?: string | null
+          current_period_start?: string | null
+          id?: string
+          plan_id?: string | null
+          status?: string | null
+          stripe_subscription_id?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          current_period_end?: string | null
+          current_period_start?: string | null
+          id?: string
+          plan_id?: string | null
+          status?: string | null
+          stripe_subscription_id?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_subscriptions_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "subscription_plans"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {

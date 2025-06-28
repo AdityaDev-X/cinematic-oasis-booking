@@ -8,14 +8,14 @@ type AuthStep = 'login' | 'signup' | 'otp';
 
 export const EnhancedAuthPage = () => {
   const [currentStep, setCurrentStep] = useState<AuthStep>('login');
-  const [otpEmail, setOtpEmail] = useState('');
+  const [otpPhone, setOtpPhone] = useState('');
 
   const toggleMode = () => {
     setCurrentStep(currentStep === 'login' ? 'signup' : 'login');
   };
 
-  const handleOTPRequired = (email: string) => {
-    setOtpEmail(email);
+  const handleOTPRequired = (phone: string) => {
+    setOtpPhone(phone);
     setCurrentStep('otp');
   };
 
@@ -62,7 +62,7 @@ export const EnhancedAuthPage = () => {
             <h1 className="text-4xl font-bold text-white mb-2">
               🔥 FlameStream
             </h1>
-            <p className="text-red-200">Premium Cinema Experience</p>
+            <p className="text-red-200">Unlimited Streaming Experience</p>
           </div>
 
           {/* Auth Forms */}
@@ -77,7 +77,7 @@ export const EnhancedAuthPage = () => {
           )}
           {currentStep === 'otp' && (
             <OTPVerification 
-              email={otpEmail}
+              phone={otpPhone}
               onBack={handleBackFromOTP}
               onVerified={handleVerified}
             />
