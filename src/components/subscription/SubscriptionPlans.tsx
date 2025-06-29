@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -19,6 +18,7 @@ export const SubscriptionPlans = () => {
   const fetchPlans = async () => {
     try {
       const fetchedPlans = await getSubscriptionPlans();
+      console.log('Fetched plans:', fetchedPlans);
       setPlans(fetchedPlans);
     } catch (error) {
       console.error('Error fetching plans:', error);
@@ -41,7 +41,7 @@ export const SubscriptionPlans = () => {
     });
   };
 
-  const getPlanIcon = (planName: string) => {
+  function getPlanIcon(planName: string) {
     switch (planName.toLowerCase()) {
       case 'basic':
         return <Zap className="h-6 w-6" />;
@@ -52,9 +52,9 @@ export const SubscriptionPlans = () => {
       default:
         return <Check className="h-6 w-6" />;
     }
-  };
+  }
 
-  const getPlanColor = (planName: string) => {
+  function getPlanColor(planName: string) {
     switch (planName.toLowerCase()) {
       case 'basic':
         return 'border-blue-500 bg-blue-500/10';
@@ -65,7 +65,7 @@ export const SubscriptionPlans = () => {
       default:
         return 'border-gray-500 bg-gray-500/10';
     }
-  };
+  }
 
   if (loading) {
     return (
@@ -113,7 +113,7 @@ export const SubscriptionPlans = () => {
                 <Check className="h-4 w-4 text-green-500" />
                 <span className="text-gray-300">{plan.simultaneous_streams} simultaneous stream{plan.simultaneous_streams > 1 ? 's' : ''}</span>
               </div>
-              {plan.features.map((feature, index) => (
+              {plan.features && plan.features.map((feature, index) => (
                 <div key={index} className="flex items-center gap-2">
                   <Check className="h-4 w-4 text-green-500" />
                   <span className="text-gray-300">{feature}</span>

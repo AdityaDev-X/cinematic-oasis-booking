@@ -27,7 +27,19 @@ export const getSubscriptionPlans = async (): Promise<SubscriptionPlan[]> => {
     const plans: SubscriptionPlan[] = [];
     
     querySnapshot.forEach((doc) => {
-      plans.push({ id: doc.id, ...doc.data() } as SubscriptionPlan);
+      const data = doc.data();
+      // Ensure features is always an array of strings
+      const features = Array.isArray(data.features) 
+        ? data.features 
+        : typeof data.features === 'string' 
+          ? [data.features] 
+          : [];
+      
+      plans.push({ 
+        id: doc.id, 
+        ...data,
+        features
+      } as SubscriptionPlan);
     });
     
     return plans;
@@ -41,7 +53,19 @@ export const getSubscriptionPlan = async (planId: string): Promise<SubscriptionP
   try {
     const planDoc = await getDoc(doc(db, 'subscription_plans', planId));
     if (planDoc.exists()) {
-      return { id: planDoc.id, ...planDoc.data() } as SubscriptionPlan;
+      const data = planDoc.data();
+      // Ensure features is always an array of strings
+      const features = Array.isArray(data.features) 
+        ? data.features 
+        : typeof data.features === 'string' 
+          ? [data.features] 
+          : [];
+      
+      return { 
+        id: planDoc.id, 
+        ...data,
+        features
+      } as SubscriptionPlan;
     }
     return null;
   } catch (error) {
