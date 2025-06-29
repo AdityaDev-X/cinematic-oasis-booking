@@ -192,6 +192,60 @@ export type Database = {
         }
         Relationships: []
       }
+      user_settings: {
+        Row: {
+          auto_play_next: boolean | null
+          auto_play_previews: boolean | null
+          created_at: string | null
+          download_quality: string | null
+          email_notifications: boolean | null
+          id: string
+          language: string | null
+          maturity_rating: string | null
+          notifications_enabled: boolean | null
+          parental_controls: boolean | null
+          playback_quality: string | null
+          push_notifications: boolean | null
+          subtitle_language: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          auto_play_next?: boolean | null
+          auto_play_previews?: boolean | null
+          created_at?: string | null
+          download_quality?: string | null
+          email_notifications?: boolean | null
+          id?: string
+          language?: string | null
+          maturity_rating?: string | null
+          notifications_enabled?: boolean | null
+          parental_controls?: boolean | null
+          playback_quality?: string | null
+          push_notifications?: boolean | null
+          subtitle_language?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          auto_play_next?: boolean | null
+          auto_play_previews?: boolean | null
+          created_at?: string | null
+          download_quality?: string | null
+          email_notifications?: boolean | null
+          id?: string
+          language?: string | null
+          maturity_rating?: string | null
+          notifications_enabled?: boolean | null
+          parental_controls?: boolean | null
+          playback_quality?: string | null
+          push_notifications?: boolean | null
+          subtitle_language?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       user_subscriptions: {
         Row: {
           created_at: string | null
