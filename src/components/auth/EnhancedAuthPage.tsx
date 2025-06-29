@@ -3,8 +3,9 @@ import { useState } from 'react';
 import { LoginForm } from './LoginForm';
 import { EnhancedSignUpForm } from './EnhancedSignUpForm';
 import { OTPVerification } from './OTPVerification';
+import { PhoneAuthForm } from './PhoneAuthForm';
 
-type AuthStep = 'login' | 'signup' | 'otp';
+type AuthStep = 'login' | 'signup' | 'otp' | 'phone';
 
 export const EnhancedAuthPage = () => {
   const [currentStep, setCurrentStep] = useState<AuthStep>('login');
@@ -24,6 +25,19 @@ export const EnhancedAuthPage = () => {
   };
 
   const handleVerified = () => {
+    setCurrentStep('login');
+  };
+
+  const handlePhoneAuth = () => {
+    setCurrentStep('phone');
+  };
+
+  const handleBackFromPhone = () => {
+    setCurrentStep('login');
+  };
+
+  const handlePhoneSuccess = () => {
+    // User is now authenticated, they'll be redirected automatically
     setCurrentStep('login');
   };
 
@@ -67,7 +81,7 @@ export const EnhancedAuthPage = () => {
 
           {/* Auth Forms */}
           {currentStep === 'login' && (
-            <LoginForm onToggleMode={toggleMode} />
+            <LoginForm onToggleMode={toggleMode} onPhoneAuth={handlePhoneAuth} />
           )}
           {currentStep === 'signup' && (
             <EnhancedSignUpForm 
@@ -80,6 +94,12 @@ export const EnhancedAuthPage = () => {
               phone={otpPhone}
               onBack={handleBackFromOTP}
               onVerified={handleVerified}
+            />
+          )}
+          {currentStep === 'phone' && (
+            <PhoneAuthForm 
+              onBack={handleBackFromPhone}
+              onSuccess={handlePhoneSuccess}
             />
           )}
         </div>
