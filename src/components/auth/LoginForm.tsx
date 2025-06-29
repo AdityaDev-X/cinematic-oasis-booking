@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { signIn } from '@/lib/firebase-auth';
+import { signIn } from '@/lib/auth';
 import { useToast } from '@/hooks/use-toast';
 
 interface LoginFormProps {
@@ -28,9 +28,7 @@ export const LoginForm = ({ onToggleMode }: LoginFormProps) => {
       console.error('Sign in error:', error);
       toast({
         title: "Login Failed",
-        description: error.message.includes('API key') 
-          ? "Firebase configuration error. Please check your Firebase setup." 
-          : error.message,
+        description: error.message,
         variant: "destructive",
       });
     } else {

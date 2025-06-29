@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { signUp } from '@/lib/firebase-auth';
+import { signUp } from '@/lib/auth';
 import { useToast } from '@/hooks/use-toast';
 
 interface SignUpFormProps {
@@ -29,9 +29,7 @@ export const SignUpForm = ({ onToggleMode }: SignUpFormProps) => {
       console.error('Sign up error:', error);
       toast({
         title: "Sign Up Failed",
-        description: error.message.includes('API key') 
-          ? "Firebase configuration error. Please check your Firebase setup." 
-          : error.message,
+        description: error.message,
         variant: "destructive",
       });
     } else {

@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { signUp } from '@/lib/firebase-auth';
+import { signUp } from '@/lib/auth';
 import { useToast } from '@/hooks/use-toast';
 import { Eye, EyeOff, User, Mail, Lock, Phone, MapPin } from 'lucide-react';
 
@@ -46,10 +46,10 @@ export const EnhancedSignUpForm = ({ onToggleMode, onOTPRequired }: EnhancedSign
       return;
     }
 
-    if (formData.password.length < 8) {
+    if (formData.password.length < 6) {
       toast({
         title: "Weak Password",
-        description: "Password must be at least 8 characters long",
+        description: "Password must be at least 6 characters long",
         variant: "destructive",
       });
       return;
@@ -67,9 +67,7 @@ export const EnhancedSignUpForm = ({ onToggleMode, onOTPRequired }: EnhancedSign
       console.error('Enhanced signup error:', error);
       toast({
         title: "Sign Up Failed",
-        description: error.message.includes('API key') 
-          ? "Firebase configuration error. Please check your Firebase setup." 
-          : error.message,
+        description: error.message,
         variant: "destructive",
       });
     } else {
@@ -77,7 +75,6 @@ export const EnhancedSignUpForm = ({ onToggleMode, onOTPRequired }: EnhancedSign
         title: "Account Created!",
         description: "Please check your email for verification link",
       });
-      // For now, just go back to login instead of OTP
       onToggleMode();
     }
 
@@ -128,7 +125,7 @@ export const EnhancedSignUpForm = ({ onToggleMode, onOTPRequired }: EnhancedSign
             <div className="space-y-2">
               <Label htmlFor="phone" className="flex items-center gap-2">
                 <Phone className="h-4 w-4" />
-                Phone
+                Phone (Optional)
               </Label>
               <Input
                 id="phone"
@@ -143,7 +140,7 @@ export const EnhancedSignUpForm = ({ onToggleMode, onOTPRequired }: EnhancedSign
             <div className="space-y-2">
               <Label htmlFor="city" className="flex items-center gap-2">
                 <MapPin className="h-4 w-4" />
-                City
+                City (Optional)
               </Label>
               <Input
                 id="city"
@@ -169,7 +166,7 @@ export const EnhancedSignUpForm = ({ onToggleMode, onOTPRequired }: EnhancedSign
                 value={formData.password}
                 onChange={handleChange}
                 required
-                minLength={8}
+                minLength={6}
                 className="pl-10 pr-10"
               />
               <button
