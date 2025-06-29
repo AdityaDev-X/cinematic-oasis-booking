@@ -22,18 +22,22 @@ export const SignUpForm = ({ onToggleMode }: SignUpFormProps) => {
     e.preventDefault();
     setLoading(true);
 
+    console.log('Attempting to sign up with:', { email, fullName });
     const { error } = await signUp(email, password, fullName);
 
     if (error) {
+      console.error('Sign up error:', error);
       toast({
-        title: "Error",
-        description: error.message,
+        title: "Sign Up Failed",
+        description: error.message.includes('API key') 
+          ? "Firebase configuration error. Please check your Firebase setup." 
+          : error.message,
         variant: "destructive",
       });
     } else {
       toast({
         title: "Success",
-        description: "Account created successfully!",
+        description: "Account created successfully! Please check your email for verification.",
       });
     }
 

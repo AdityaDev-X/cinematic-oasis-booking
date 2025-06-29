@@ -21,12 +21,16 @@ export const LoginForm = ({ onToggleMode }: LoginFormProps) => {
     e.preventDefault();
     setLoading(true);
 
+    console.log('Attempting to sign in with:', { email });
     const { error } = await signIn(email, password);
 
     if (error) {
+      console.error('Sign in error:', error);
       toast({
-        title: "Error",
-        description: error.message,
+        title: "Login Failed",
+        description: error.message.includes('API key') 
+          ? "Firebase configuration error. Please check your Firebase setup." 
+          : error.message,
         variant: "destructive",
       });
     } else {

@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { signUp } from '@/lib/auth';
+import { signUp } from '@/lib/firebase-auth';
 import { useToast } from '@/hooks/use-toast';
 import { Eye, EyeOff, User, Mail, Lock, Phone, MapPin } from 'lucide-react';
 
@@ -57,23 +57,28 @@ export const EnhancedSignUpForm = ({ onToggleMode, onOTPRequired }: EnhancedSign
 
     setLoading(true);
 
+    console.log('Enhanced signup attempt with:', { email: formData.email, fullName: formData.fullName });
     const { error } = await signUp(formData.email, formData.password, formData.fullName, {
       phone: formData.phone,
       city: formData.city
     });
 
     if (error) {
+      console.error('Enhanced signup error:', error);
       toast({
         title: "Sign Up Failed",
-        description: error.message,
+        description: error.message.includes('API key') 
+          ? "Firebase configuration error. Please check your Firebase setup." 
+          : error.message,
         variant: "destructive",
       });
     } else {
       toast({
         title: "Account Created!",
-        description: "Please check your email for verification code",
+        description: "Please check your email for verification link",
       });
-      onOTPRequired(formData.email);
+      // For now, just go back to login instead of OTP
+      onToggleMode();
     }
 
     setLoading(false);
